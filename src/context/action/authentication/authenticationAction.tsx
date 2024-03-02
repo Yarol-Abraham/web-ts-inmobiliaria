@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactNode, useEffect, useReducer } from "react";
 
 import { AuthenticationContext } from "../../AuthenticationContext";
@@ -33,7 +35,7 @@ const AuthenticationAction: React.FC<props> = (props: props)  =>
             if(sessionInfomation != null)
             {
                 const sessionInfomationObject: SessionInformationResponse = JSON.parse(sessionInfomation); 
-                if(sessionInfomationObject.strSessionId == undefined) redireccionar();
+                if(sessionInfomationObject.data.token == undefined) redireccionar();
                 
                 dispatch({
                     type: SESSIONINFORMATION_SUCCESS,
@@ -60,7 +62,7 @@ const AuthenticationAction: React.FC<props> = (props: props)  =>
             const sendRequest = await request.post("auth/login", sessionInformationCredential);
             sessionInformationResponse = sendRequest.data;
 
-            if(sessionInformationResponse.strResponseCode === "00")
+            if(sessionInformationResponse.status === 200)
             {
                 localStorage.setItem("sessionInfomation", JSON.stringify(sessionInformationResponse));
                 dispatch({
@@ -71,10 +73,9 @@ const AuthenticationAction: React.FC<props> = (props: props)  =>
                 });
             }
     
-        } catch (error) {
-            console.log("error en: AuthenticationAction.postSessionInformation() " + error);
-            sessionInformationResponse.strResponseCode = "-1";
-            sessionInformationResponse.strResponseMessage = "LO SENTIMOS, SERVICIO NO DISPONIBLE";
+        } catch (error: any) {
+            sessionInformationResponse.status =  error.response.data.status;
+            sessionInformationResponse.message = error.response.data.message;
         }
         return sessionInformationResponse;
     }

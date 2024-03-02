@@ -9,17 +9,18 @@ export interface props {
 
 export const initialState: props = {
     sessionInformationResponse: {
-        strResponseCode: "",
-        strResponseMessage: "",
-        strSessionId: "",
-        strIdUsuario: "",
-        strNombre: "",
-        strFotografia: "",
-        intRoleSelect: 0,
-        listRoles: []
+        status: 0,
+        message: "",
+        data: {
+            token: "",
+            user: {
+                name: "",
+                id: ""
+            }
+        }
     },
     sessionInformationCredential: {
-        correoElectronico: "",
+        name: "",
         password: ""
     },
     getSessionInformation: function(){},
