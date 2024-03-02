@@ -7,7 +7,7 @@ export default function DashboardLayout({
     children: React.ReactNode
   }) {
     return (
-      <main>
+      <main className="m-auto flex flex-col  justify-center">
         
         <Header />
 
